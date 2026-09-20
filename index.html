@@ -74,7 +74,7 @@
        تصاميم القوالب الثلاثة الفائقة الجاذبية والواقعية
        ========================================================================= */
 
-    /* 1. ورقة صفراء ممزقة الحواف مع خلفية حمراء فخمة ودبوس */
+    /* 1. ورقة صفراء ممزقة الحواف مع خلفية حمراء فخمة */
     .theme-torn-yellow-red {
       background: linear-gradient(145deg, #b91c1c 0%, #7f1d1d 100%);
       border: 4px solid #991b1b;
@@ -98,14 +98,6 @@
       );
       padding-bottom: 2rem;
     }
-    .red-pushpin {
-      width: 26px;
-      height: 26px;
-      background: radial-gradient(circle at 35% 35%, #ef4444, #991b1b);
-      border-radius: 50%;
-      border: 2.5px solid #ffffff;
-      box-shadow: 0 6px 10px rgba(0,0,0,0.35);
-    }
 
     /* 2. ورقة دفتر مسطرة متعرجة مع خلفية زرقاء ملكية وحلقات دفتر */
     .theme-notebook-blue {
@@ -126,7 +118,6 @@
       position: relative;
       border-left: 8px solid #cbd5e1;
     }
-    /* تأثير حلقات الدفتر على الجانب */
     .notebook-holes {
       position: absolute;
       left: -16px;
@@ -145,7 +136,7 @@
       box-shadow: 0 2px 4px rgba(0,0,0,0.25);
     }
 
-    /* 3. ملاحظات على سبورة مع خلفية برتقالية وعلامات مغناطيسية */
+    /* 3. ملاحظات على سبورة مع خلفية برتقالية */
     .theme-whiteboard-orange {
       background: linear-gradient(145deg, #ea580c 0%, #9a3412 100%);
       border: 4px solid #f97316;
@@ -157,14 +148,6 @@
       box-shadow: 0 12px 26px rgba(0,0,0,0.25);
       border: 3px solid #fdba74;
       position: relative;
-    }
-    .magnet-pin {
-      width: 22px;
-      height: 22px;
-      background: radial-gradient(circle at 30% 30%, #38bdf8, #0369a1);
-      border-radius: 50%;
-      border: 2px solid #ffffff;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
     }
 
     /* لوحة التصدير المباشر للجداول */
@@ -192,7 +175,7 @@
     <span id="toast-message">تمت العملية بنجاح</span>
   </div>
 
-  <!-- شريط الرأس للبرنامج (فاتح وأنيق ومريح للعين) -->
+  <!-- شريط الرأس للبرنامج -->
   <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -217,7 +200,7 @@
     </div>
   </header>
 
-  <!-- رؤوس العناوين والتبويبات الرئيسية (فاتحة، بارزة، عريضة، سهلة النقر على الجوال) -->
+  <!-- رؤوس العناوين والتبويبات الرئيسية -->
   <div class="bg-white border-b border-slate-200 sticky top-16 sm:top-20 z-30 shadow-sm overflow-x-auto select-none">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center gap-2.5 min-w-max">
       <button onclick="switchTab('tab-pricing', this)" class="app-tab active px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-sky-600 text-white shadow-sm shadow-sky-600/30 transition">
@@ -234,12 +217,10 @@
 
   <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
 
-    <!-- =========================================================================
-         التبويب 1: أسعار الصرف وحساب وتصدير الباقات
-         ========================================================================= -->
+    <!-- التبويب 1: أسعار الصرف وحساب وتصدير الباقات -->
     <div id="tab-pricing" class="tab-pane space-y-6">
       
-      <!-- إدخال أسعار الصرف مع الحساب الفوري التلقائي -->
+      <!-- إدخال أسعار الصرف -->
       <div class="card-light rounded-2xl p-5 sm:p-6 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
           <div>
@@ -272,7 +253,7 @@
         </div>
       </div>
 
-      <!-- أزرار الإرسال المباشر عبر واتساب (كنص، وكصورة منسقة، و PDF) -->
+      <!-- أزرار الإرسال المباشر عبر واتساب -->
       <div class="card-light rounded-2xl p-5 sm:p-6 space-y-3">
         <h3 class="text-sm font-black text-slate-800">إرسال وتصدير قائمة الأسعار الحالية:</h3>
         <div class="flex flex-wrap gap-3">
@@ -288,16 +269,12 @@
         </div>
       </div>
 
-      <!-- جداول المعاينة الحية للحسابات لجميع الأقسام (ديناميكية ومتجاوبة) -->
-      <div id="dynamic-pricing-tables-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <!-- تملأ ديناميكياً بجميع الأقسام والباقات الحالية والجديدة -->
-      </div>
+      <!-- جداول المعاينة الحية للحسابات -->
+      <div id="dynamic-pricing-tables-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
 
     </div>
 
-    <!-- =========================================================================
-         التبويب 2: القوالب السريعة ونماذج الإعلانات الإبداعية الثلاثة
-         ========================================================================= -->
+    <!-- التبويب 2: القوالب السريعة ونماذج الإعلانات -->
     <div id="tab-templates" class="tab-pane hidden space-y-6">
       
       <!-- إعداد رقم الواتساب الافتراضي -->
@@ -332,7 +309,6 @@
           <div>
             <label class="block text-xs font-bold text-slate-700 mb-1">اختر القالب:</label>
             <select id="template-dropdown" onchange="onTemplateSelectChange()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-bold text-xs focus:outline-none focus:border-sky-500 shadow-sm">
-              <!-- يملأ ديناميكياً -->
             </select>
           </div>
 
@@ -348,14 +324,14 @@
         </div>
       </div>
 
-      <!-- النماذج الإعلانية الجذابة الثلاثة مع اللوغو AL-Salam Net أعلى اليسار -->
+      <!-- النماذج الإعلانية الجذابة الثلاثة -->
       <div class="card-light rounded-2xl p-5 sm:p-6 space-y-4">
         <div class="pb-2 border-b border-slate-100">
           <h3 class="font-black text-sm sm:text-base text-slate-900">اختيار شكل التصميم الإعلاني</h3>
-          <p class="text-xs text-slate-500 font-bold">اختر المظهر المناسب وسيتم إرفاق الشعار وتجهيز الصورة للإرسال الفوري</p>
+          <p class="text-xs text-slate-500 font-bold">اسم "شبكة السلام نت" يظهر في الزاوية العلوية اليمنى، ولوغو AL-Salam Net أعلى اليسار</p>
         </div>
 
-        <!-- أزرار اختيار الأنماط الثلاثة الإبداعية -->
+        <!-- أزرار اختيار الأنماط الثلاثة -->
         <div class="flex flex-wrap gap-2.5">
           <button onclick="changeAdTheme('yellow-red', this)" class="theme-btn active px-4 py-2.5 rounded-xl text-xs font-black border-2 border-red-600 bg-red-50 text-red-700 transition">
             1. ورقة صفراء ممزقة وخلفية حمراء
@@ -374,9 +350,11 @@
           <!-- بطاقة الإعلان الحية القابلة للالتقاط -->
           <div id="ad-capture-element" class="w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-torn-yellow-red text-right shadow-2xl relative">
             
-            <!-- اللوغو بالإنجليزية أعلى اليسار AL-Salam Net -->
+            <!-- الترويسة العلوية: اليمين "شبكة السلام نت" واليسار "AL-Salam Net" -->
             <div class="flex justify-between items-center mb-4">
-              <div class="red-pushpin"></div>
+              <div class="text-amber-200 font-black text-xs sm:text-sm tracking-wide">
+                شبكة السلام نت
+              </div>
               <div class="bg-black/40 backdrop-blur-sm border border-white/30 text-white px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
                 AL-Salam Net
               </div>
@@ -386,15 +364,11 @@
               <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-amber-950 text-center border-b-2 border-amber-300 pb-2 mb-3"></h5>
               <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-900 leading-relaxed whitespace-pre-line"></div>
               
-              <div class="mt-6 pt-2.5 border-t border-amber-300/80 flex justify-between items-center text-[11px] font-black text-amber-950">
-                <span>شبكة السلام نت</span>
+              <div class="mt-6 pt-2.5 border-t border-amber-300/80 flex justify-end items-center text-[11px] font-black text-amber-950">
                 <span id="card-preview-date"></span>
               </div>
             </div>
 
-            <div class="text-center text-white/90 text-xs font-bold mt-3">
-              شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
-            </div>
           </div>
 
         </div>
@@ -415,12 +389,9 @@
 
     </div>
 
-    <!-- =========================================================================
-         التبويب 3: تعديل قيم الباقات الأساسية بالدولار ($)
-         ========================================================================= -->
+    <!-- التبويب 3: تعديل قيم الباقات الأساسية بالدولار ($) -->
     <div id="tab-manage-plans" class="tab-pane hidden space-y-6">
       
-      <!-- بطاقة إضافة قسم جديد وأدوات التحكم -->
       <div class="card-light rounded-2xl p-5 sm:p-6 space-y-4">
         <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-3">
           <div>
@@ -437,15 +408,12 @@
           </div>
         </div>
 
-        <!-- بطاقات الأقسام والباقات الديناميكية -->
-        <div id="dynamic-categories-management" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <!-- تملأ برمجياً بالأقسام وباقاتها مع أزرار الإضافة والحذف لكل قسم -->
-        </div>
+        <div id="dynamic-categories-management" class="grid grid-cols-1 lg:grid-cols-2 gap-6"></div>
       </div>
 
     </div>
 
-    <!-- نافذة منبثقة أنيقة لإضافة قسم جديد (فايبر / 4G / لاسلكي ...) -->
+    <!-- نافذة إضافة قسم جديد -->
     <div id="modal-add-category" class="fixed inset-0 z-[250] bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
       <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
         <div class="bg-slate-900 text-white px-5 py-4 flex justify-between items-center">
@@ -487,12 +455,12 @@
 
   </main>
 
-  <!-- الحاوية المخصصة لتوليد صورة الجدول المنسق الفاخر مع اللوغو AL-Salam Net وملف الـ PDF -->
+  <!-- الحاوية المخصصة لتوليد صورة جدول الأسعار -->
   <div id="export-rates-canvas">
     <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #0284c7; padding-bottom: 14px; margin-bottom: 20px;">
-      <!-- يمين: اسم الشبكة بالعربي -->
+      <!-- يمين: اسم الشبكة بالعربي في الزاوية العلوية اليمنى -->
       <div style="text-align: right;">
-        <h2 style="color: #0f172a; margin: 0; font-size: 26px; font-weight: 900; line-height: 1.2;">شبكة السلام نت للاتصالات</h2>
+        <h2 style="color: #0f172a; margin: 0; font-size: 26px; font-weight: 900; line-height: 1.2;">شبكة السلام نت</h2>
         <p style="color: #0284c7; margin: 4px 0 0; font-weight: 800; font-size: 15px;">قائمة أسعار وباقات الإنترنت المعتمدة لهذا الشهر</p>
         <div id="export-date-badge" style="color: #64748b; font-weight: bold; font-size: 13px; margin-top: 4px;"></div>
       </div>
@@ -506,20 +474,16 @@
       </div>
     </div>
 
-    <!-- الجداول المنسقة ديناميكياً لجميع الأقسام (فضائي، ADSL، فايبر، وأي قسم مضاف) -->
-    <div id="canvas-categories-wrapper" style="display: flex; gap: 16px; flex-wrap: wrap;">
-      <!-- يملأ ديناميكياً بجميع جداول الأقسام -->
-    </div>
+    <!-- الجداول المنسقة ديناميكياً لجميع الأقسام -->
+    <div id="canvas-categories-wrapper" style="display: flex; gap: 16px; flex-wrap: wrap;"></div>
 
-    <!-- شريط الصرف والتذييل -->
-    <div style="margin-top: 18px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 800; color: #334155;">
+    <!-- شريط الصرف في الأسفل دون جملة الشبكة -->
+    <div style="margin-top: 18px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 16px; display: flex; justify-content: center; align-items: center; font-size: 13px; font-weight: 800; color: #334155;">
       <span id="canvas-rate-summary">سعر الصرف: $1 = 48.0 ₺ | $1 = 133.0 ل.س</span>
-      <span>شبكة السلام نت • أسرع إنترنت وأعلى استقرار</span>
     </div>
   </div>
 
   <script>
-    /* البيانات الافتراضية المعتمدة لشبكة السلام نت (مع معمارية الفئات الديناميكية) */
     const INITIAL_APP_DATA = {
       rates: { try: 48.0, syp: 133.0 },
       phone: "",
@@ -560,7 +524,7 @@
       templates: [
         {
           title: "تنبيه هام بشأن العواصف الرعدية",
-          text: "السلام عليكم ورحمة الله وبركاته\nنذكر الإخوة المشتركين بضرورة إطفاء الراوترات الخاصة أثناء العواصف الرعدية وإزالة كافة الكوابل منها (بعد التأكد من ترتيب توصيلها) للحفاظ عليها من التلف.\nالسلام نت"
+          text: "السلام عليكم ورحمة الله وبركاته\nنذكر الإخوة المشتركين بضرورة إطفاء الراوترات الخاصة أثناء العواصف الرعدية وإزالة كافة الكوابل منها (بعد التأكد من ترتيب توصيلها) للحفاظ عليها من التلف."
         },
         {
           title: "تنبيه موعد إيقاف الاشتراكات والدوام",
@@ -568,23 +532,21 @@
         },
         {
           title: "فصل الاشتراكات وعطلة الجمعة (شام كاش)",
-          text: "السلام عليكم\nنذكر الإخوة المشتركين بأن غداً 3-9-2026 الساعة 11 ظهراً موعد الفصل التلقائي للاشتراكات غير المدفوعة.\nملاحظة:\nيوم الجمعة 4-9-2026 عطلة لا يوجد تسديد فواتير في المكتب ولا عن طريق شام كاش.\nالسلام نت"
+          text: "السلام عليكم\nنذكر الإخوة المشتركين بأن غداً 3-9-2026 الساعة 11 ظهراً موعد الفصل التلقائي للاشتراكات غير المدفوعة.\nملاحظة:\nيوم الجمعة 4-9-2026 عطلة لا يوجد تسديد فواتير في المكتب ولا عن طريق شام كاش."
         },
         {
           title: "إشعار انقطاع طارئ وصيانة",
-          text: "السلام عليكم ورحمة الله وبركاته\nمشتركينا الكرام، نلفت عنايتكم إلى حدوث انقطاع مؤقت في الكابل الرئيسي المغذي للشبكة، وفريق الصيانة يباشر المعالجة فوراً وستعود الخدمة بأسرع وقت.\nشاكرين تفهمكم وحسن صبركم.\nشبكة السلام نت"
+          text: "السلام عليكم ورحمة الله وبركاته\nمشتركينا الكرام، نلفت عنايتكم إلى حدوث انقطاع مؤقت في الكابل الرئيسي المغذي للشبكة، وفريق الصيانة يباشر المعالجة فوراً وستعود الخدمة بأسرع وقت.\nشاكرين تفهمكم وحسن صبركم."
         },
         {
           title: "إشعار إعادة وصل واستقرار الخدمة",
-          text: "السلام عليكم ورحمة الله وبركاته\nتم إصلاح العطل وعودة خدمة الإنترنت للعمل بكفاءة واستقرار تام.\nفي حال واجهتكم أي مشكلة يرجى إعادة تشغيل الراوتر لمدة دقيقة.\nشكراً لصبركم - شبكة السلام نت"
+          text: "السلام عليكم ورحمة الله وبركاته\nتم إصلاح العطل وعودة خدمة الإنترنت للعمل بكفاءة واستقرار تام.\nفي حال واجهتكم أي مشكلة يرجى إعادة تشغيل الراوتر لمدة دقيقة.\nشكراً لصبركم."
         }
       ]
     };
 
-    /* تحميل البيانات من التخزين التلقائي المحلي مع المزامنة الذكية */
     let ProgramState = JSON.parse(localStorage.getItem('Alsalam_Light_Tool_V2')) || INITIAL_APP_DATA;
 
-    // ترقية البيانات السابقة إذا كانت بصيغة sat و adsl المنفصلة
     if (!ProgramState.categories && (ProgramState.sat || ProgramState.adsl)) {
       ProgramState.categories = [
         {
@@ -701,9 +663,6 @@
       return COLOR_THEMES[key] || COLOR_THEMES.sky;
     }
 
-    /* =========================================================================
-       التبديل بين التبويبات الرئيسية
-       ========================================================================= */
     window.switchTab = function(tabId, btn) {
       document.querySelectorAll('.app-tab').forEach(b => {
         b.className = "app-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition";
@@ -737,7 +696,6 @@
       ProgramState.categories.forEach((cat, catIdx) => {
         const theme = getColorTheme(cat.color);
 
-        // 1. إنشاء جدول العرض التفاعلي في التبويب الأول
         let rowsHtml = "";
         let canvasRowsHtml = "";
 
@@ -764,7 +722,6 @@
           `;
         });
 
-        // كرت الجدول في واجهة البرنامج
         container.innerHTML += `
           <div class="card-light rounded-2xl overflow-hidden border ${theme.border} shadow-sm">
             <div class="${theme.headerBg} p-4 border-b border-slate-100 flex justify-between items-center">
@@ -789,7 +746,6 @@
           </div>
         `;
 
-        // جدول القسم داخل كانفاس التصدير المباشر كصورة
         const flexWidth = ProgramState.categories.length === 1 ? "100%" : (ProgramState.categories.length === 2 ? "calc(50% - 8px)" : "calc(33.333% - 11px)");
         canvasWrapper.innerHTML += `
           <div style="flex: 1 1 ${flexWidth}; min-width: 260px; border: 2px solid ${theme.canvasBorder}; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
@@ -826,9 +782,6 @@
       saveState("تم حفظ سعر الصرف وحساب كافة الباقات فورياً!");
     };
 
-    /* =========================================================================
-       إدارة الأقسام والباقات بالدولار (إضافة، تعديل، حذف)
-       ========================================================================= */
     function renderDynamicPackageManagement() {
       const box = document.getElementById('dynamic-categories-management');
       box.innerHTML = "";
@@ -876,7 +829,6 @@
       });
     }
 
-    // حفظ قيم وأسماء الباقات
     window.saveCustomPackageDollars = function() {
       ProgramState.categories.forEach((cat, catIdx) => {
         cat.plans.forEach((plan, planIdx) => {
@@ -891,7 +843,6 @@
       saveState("تم حفظ كافة الباقات والأقسام بنجاح!");
     };
 
-    // إضافة باقة جديدة لقسم محدد
     window.addPlanToCategory = function(catIdx) {
       const cat = ProgramState.categories[catIdx];
       if (!cat) return;
@@ -906,7 +857,6 @@
       showToast(`تمت إضافة باقة جديدة إلى: ${cat.name}`);
     };
 
-    // حذف باقة من قسم
     window.removePlanFromCategory = function(catIdx, planIdx) {
       const cat = ProgramState.categories[catIdx];
       if (!cat) return;
@@ -916,7 +866,6 @@
       showToast("تم حذف الباقة بنجاح.");
     };
 
-    // إضافة قسم جديد عبر النافذة المنبثقة
     window.toggleAddCategoryModal = function(show) {
       const modal = document.getElementById('modal-add-category');
       if (show) {
@@ -956,7 +905,6 @@
       saveState(`تمت إضافة قسم (${name}) بنجاح!`);
     };
 
-    // حذف قسم بالكامل
     window.removeCategory = function(catIdx) {
       if (ProgramState.categories.length <= 1) {
         showToast("يجب الإبقاء على قسم واحد على الأقل في البرنامج!");
@@ -1057,7 +1005,7 @@
         });
       });
 
-      text += `\nسعر الصرف المعتمد: $1 = ${ProgramState.rates.try} ₺ | $1 = ${ProgramState.rates.syp} ل.س\nشبكة السلام نت - نسعد بخدمتكم دائماً`;
+      text += `\nسعر الصرف المعتمد: $1 = ${ProgramState.rates.try} ₺ | $1 = ${ProgramState.rates.syp} ل.س`;
       window.open(getWhatsAppDirectUrl(text), '_blank');
     };
 
@@ -1085,17 +1033,15 @@
       });
     };
 
-    // 2. إرسال القالب الحالي كصورة عبر واتساب
     window.sendTemplateAsWhatsAppImage = function() {
       const card = document.getElementById('ad-capture-element');
       const title = document.getElementById('template-title-in').value.trim();
       const text = document.getElementById('template-text-in').value.trim();
-      const caption = `*${title}*\n\n${text}\n\nشبكة السلام نت`;
+      const caption = `*${title}*\n\n${text}`;
 
       shareElementAsWhatsAppImage(card, `اعلان_السلام_نت_${Date.now()}.png`, caption);
     };
 
-    // 3. تحميل صورة القالب فقط إلى الجهاز
     window.downloadActiveTemplateImageOnly = function() {
       const card = document.getElementById('ad-capture-element');
       html2canvas(card, { scale: 2.5 }).then(canvas => {
@@ -1139,7 +1085,7 @@
     window.addNewCustomTemplate = function() {
       ProgramState.templates.push({
         title: "قالب إشعار جديد",
-        text: "السلام عليكم ورحمة الله وبركاته\nنص الإشعار السريع يكتب هنا...\nشبكة السلام نت"
+        text: "السلام عليكم ورحمة الله وبركاته\nنص الإشعار السريع يكتب هنا..."
       });
       populateTemplatesDropdown();
       document.getElementById('template-dropdown').value = ProgramState.templates.length - 1;
@@ -1183,7 +1129,9 @@
         target.className = "w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-torn-yellow-red text-right shadow-2xl relative";
         target.innerHTML = `
           <div class="flex justify-between items-center mb-4">
-            <div class="red-pushpin"></div>
+            <div class="text-amber-200 font-black text-xs sm:text-sm tracking-wide">
+              شبكة السلام نت
+            </div>
             <div class="bg-black/40 backdrop-blur-sm border border-white/30 text-white px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
               AL-Salam Net
             </div>
@@ -1191,20 +1139,18 @@
           <div class="torn-paper p-5 sm:p-6 rounded-t-xl text-slate-950 relative">
             <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-amber-950 text-center border-b-2 border-amber-300 pb-2 mb-3"></h5>
             <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-900 leading-relaxed whitespace-pre-line"></div>
-            <div class="mt-6 pt-2.5 border-t border-amber-300/80 flex justify-between items-center text-[11px] font-black text-amber-950">
-              <span>شبكة السلام نت</span>
+            <div class="mt-6 pt-2.5 border-t border-amber-300/80 flex justify-end items-center text-[11px] font-black text-amber-950">
               <span id="card-preview-date">${dateStr}</span>
             </div>
-          </div>
-          <div class="text-center text-white/90 text-xs font-bold mt-3">
-            شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
           </div>
         `;
       } else if (themeKey === 'blue-notebook') {
         target.className = "w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-notebook-blue text-right shadow-2xl relative";
         target.innerHTML = `
           <div class="flex justify-between items-center mb-4">
-            <div class="text-sky-300 text-xs font-black">إشعار هام • السلام نت</div>
+            <div class="text-sky-300 font-black text-xs sm:text-sm tracking-wide">
+              شبكة السلام نت
+            </div>
             <div class="bg-blue-950/80 border border-sky-400/50 text-sky-200 px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
               AL-Salam Net
             </div>
@@ -1219,20 +1165,18 @@
             </div>
             <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-sky-950 text-center border-b-2 border-sky-200 pb-2 mb-3"></h5>
             <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed whitespace-pre-line"></div>
-            <div class="mt-6 pt-3 border-t border-sky-200 flex justify-between items-center text-[11px] font-black text-sky-900">
-              <span>فريق شبكة السلام نت</span>
+            <div class="mt-6 pt-3 border-t border-sky-200 flex justify-end items-center text-[11px] font-black text-sky-900">
               <span id="card-preview-date">${dateStr}</span>
             </div>
-          </div>
-          <div class="text-center text-sky-200/90 text-xs font-bold mt-3">
-            شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
           </div>
         `;
       } else if (themeKey === 'white-orange') {
         target.className = "w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-whiteboard-orange text-right shadow-2xl relative";
         target.innerHTML = `
           <div class="flex justify-between items-center mb-4">
-            <div class="magnet-pin"></div>
+            <div class="text-orange-200 font-black text-xs sm:text-sm tracking-wide">
+              شبكة السلام نت
+            </div>
             <div class="bg-amber-950/50 border border-orange-200/50 text-white px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
               AL-Salam Net
             </div>
@@ -1240,13 +1184,9 @@
           <div class="board-memo p-6 sm:p-7 text-slate-900 relative">
             <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-orange-600 text-center border-b-2 border-orange-200 pb-2 mb-3"></h5>
             <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed whitespace-pre-line"></div>
-            <div class="mt-6 pt-3 border-t border-orange-200 flex justify-between items-center text-[11px] font-black text-orange-800">
-              <span>شبكة السلام نت</span>
+            <div class="mt-6 pt-3 border-t border-orange-200 flex justify-end items-center text-[11px] font-black text-orange-800">
               <span id="card-preview-date">${dateStr}</span>
             </div>
-          </div>
-          <div class="text-center text-white/90 text-xs font-bold mt-3">
-            شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
           </div>
         `;
       }
