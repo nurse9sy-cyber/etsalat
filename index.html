@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>برنامج شبكة السلام نت للإرسال وإدارة الأسعار</title>
+  
+  <!-- خط كايرو العربي الفاخر وخط إنجليزي أنيق للوغو -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&family=Montserrat:wght@800;900&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS عبر CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- مكتبات توليد الصور والـ PDF بجودة فائقة -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    * {
+      font-family: 'Cairo', sans-serif;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .font-brand-en {
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: -0.5px;
+    }
+
+    body {
+      background-color: #f1f5f9;
+      color: #0f172a;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* خلفية هندسية تقنية فاتحة ومريحة للعين */
+    .app-bg-light {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background: 
+        radial-gradient(circle at 10% 15%, rgba(2, 132, 199, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 90% 85%, rgba(245, 158, 11, 0.06) 0%, transparent 45%),
+        linear-gradient(to right, rgba(203, 213, 225, 0.4) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(203, 213, 225, 0.4) 1px, transparent 1px);
+      background-size: 100% 100%, 100% 100%, 36px 36px, 36px 36px;
+      background-color: #f8fafc;
+    }
+
+    /* بطاقات بيضاء نقية ومرتفعة بظلال ناعمة */
+    .card-light {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.05), 0 8px 10px -6px rgba(15, 23, 42, 0.02);
+    }
+
+    /* شريط التمرير */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f1f5f9;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #0284c7;
+      border-radius: 999px;
+    }
+
+    /* =========================================================================
+       تصاميم القوالب الثلاثة الفائقة الجاذبية والواقعية
+       ========================================================================= */
+
+    /* 1. ورقة صفراء ممزقة الحواف مع خلفية حمراء فخمة ودبوس */
+    .theme-torn-yellow-red {
+      background: linear-gradient(145deg, #b91c1c 0%, #7f1d1d 100%);
+      border: 4px solid #991b1b;
+      box-shadow: 0 16px 36px rgba(185, 28, 28, 0.35);
+      position: relative;
+    }
+    .torn-paper {
+      background: #fef08a;
+      background-image: radial-gradient(#fde047 1px, transparent 1px);
+      background-size: 16px 16px;
+      position: relative;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.25);
+      /* تأثير الحواف الممزقة في الأسفل */
+      clip-path: polygon(
+        0% 0%, 100% 0%, 100% 95%, 
+        97% 98%, 94% 94%, 91% 99%, 88% 95%, 85% 98%, 82% 94%, 79% 99%, 76% 95%, 
+        73% 98%, 70% 94%, 67% 99%, 64% 95%, 61% 98%, 58% 94%, 55% 99%, 52% 95%, 
+        49% 98%, 46% 94%, 43% 99%, 40% 95%, 37% 98%, 34% 94%, 31% 99%, 28% 95%, 
+        25% 98%, 22% 94%, 19% 99%, 16% 95%, 13% 98%, 10% 94%, 7% 99%, 4% 95%, 
+        0% 98%
+      );
+      padding-bottom: 2rem;
+    }
+    .red-pushpin {
+      width: 26px;
+      height: 26px;
+      background: radial-gradient(circle at 35% 35%, #ef4444, #991b1b);
+      border-radius: 50%;
+      border: 2.5px solid #ffffff;
+      box-shadow: 0 6px 10px rgba(0,0,0,0.35);
+    }
+
+    /* 2. ورقة دفتر مسطرة متعرجة مع خلفية زرقاء ملكية وحلقات دفتر */
+    .theme-notebook-blue {
+      background: linear-gradient(145deg, #0f172a 0%, #1e3a8a 70%, #172554 100%);
+      border: 3px solid #3b82f6;
+      box-shadow: 0 16px 36px rgba(30, 58, 138, 0.35);
+    }
+    .wavy-notebook-paper {
+      background-color: #ffffff;
+      /* تسطير دفتر أزرق هادئ */
+      background-image: 
+        linear-gradient(to right, #fee2e2 2px, transparent 2px),
+        linear-gradient(transparent 27px, #e0f2fe 28px);
+      background-size: 100% 100%, 100% 28px;
+      background-position: 32px 0, 0 10px;
+      border-radius: 12px;
+      box-shadow: 0 12px 28px rgba(0,0,0,0.3);
+      position: relative;
+      border-left: 8px solid #cbd5e1;
+    }
+    /* تأثير حلقات الدفتر على الجانب */
+    .notebook-holes {
+      position: absolute;
+      left: -16px;
+      top: 20px;
+      bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      pointer-events: none;
+    }
+    .notebook-ring {
+      width: 18px;
+      height: 10px;
+      background: linear-gradient(90deg, #94a3b8, #f8fafc, #64748b);
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.25);
+    }
+
+    /* 3. ملاحظات على سبورة مع خلفية برتقالية وعلامات مغناطيسية */
+    .theme-whiteboard-orange {
+      background: linear-gradient(145deg, #ea580c 0%, #9a3412 100%);
+      border: 4px solid #f97316;
+      box-shadow: 0 16px 36px rgba(234, 88, 12, 0.35);
+    }
+    .board-memo {
+      background: #ffffff;
+      border-radius: 14px;
+      box-shadow: 0 12px 26px rgba(0,0,0,0.25);
+      border: 3px solid #fdba74;
+      position: relative;
+    }
+    .magnet-pin {
+      width: 22px;
+      height: 22px;
+      background: radial-gradient(circle at 30% 30%, #38bdf8, #0369a1);
+      border-radius: 50%;
+      border: 2px solid #ffffff;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+    }
+
+    /* لوحة التصدير المباشر للجداول */
+    #export-rates-canvas {
+      position: absolute;
+      left: -9999px;
+      top: -9999px;
+      width: 900px;
+      background: #ffffff;
+      color: #0f172a;
+      padding: 32px;
+      border-radius: 20px;
+      font-family: 'Cairo', sans-serif;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- خلفية التطبيق الفاتحة -->
+  <div class="app-bg-light"></div>
+
+  <!-- إشعار نجاح العمليات -->
+  <div id="app-toast" class="fixed top-5 left-1/2 -translate-x-1/2 z-[300] hidden bg-slate-900 text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-full shadow-2xl flex items-center gap-2.5 transition-all">
+    <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-pulse"></span>
+    <span id="toast-message">تمت العملية بنجاح</span>
+  </div>
+
+  <!-- شريط الرأس للبرنامج (فاتح وأنيق ومريح للعين) -->
+  <header class="bg-white/95 border-b border-slate-200 sticky top-0 z-40 backdrop-blur-md shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-16 sm:h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-sky-600 to-cyan-500 flex items-center justify-center text-white font-black text-xl shadow-md shadow-sky-500/20">
+          س
+        </div>
+        <div>
+          <h1 class="text-base sm:text-xl font-black text-slate-900 leading-tight">شبكة السلام نت للاتصالات</h1>
+          <p class="text-[11px] sm:text-xs text-sky-600 font-bold">لوحة الحساب الفوري وإرسال الباقات والقوالب عبر واتساب</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <span class="text-xs font-extrabold text-sky-700 bg-sky-50 border border-sky-200 px-3.5 py-1.5 rounded-xl hidden sm:inline-flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-sky-500"></span>
+          جاهز للإرسال المباشر
+        </span>
+        <button onclick="resetToDefaults()" class="text-xs font-bold text-rose-600 hover:text-white bg-rose-50 hover:bg-rose-600 border border-rose-200 hover:border-rose-600 px-3.5 py-1.5 rounded-xl transition">
+          إعادة ضبط
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- رؤوس العناوين والتبويبات الرئيسية (فاتحة، بارزة، عريضة، سهلة النقر على الجوال) -->
+  <div class="bg-white border-b border-slate-200 sticky top-16 sm:top-20 z-30 shadow-sm overflow-x-auto select-none">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-2.5 flex items-center gap-2.5 min-w-max">
+      <button onclick="switchTab('tab-pricing', this)" class="app-tab active px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-sky-600 text-white shadow-sm shadow-sky-600/30 transition">
+        1. أسعار الصرف وحساب الباقات
+      </button>
+      <button onclick="switchTab('tab-templates', this)" class="app-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition">
+        2. القوالب السريعة ونماذج الإعلانات
+      </button>
+      <button onclick="switchTab('tab-manage-plans', this)" class="app-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition">
+        3. تعديل قيم الباقات بالدولار ($)
+      </button>
+    </div>
+  </div>
+
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 py-6 space-y-6">
+
+    <!-- =========================================================================
+         التبويب 1: أسعار الصرف وحساب وتصدير الباقات
+         ========================================================================= -->
+    <div id="tab-pricing" class="tab-pane space-y-6">
+      
+      <!-- إدخال أسعار الصرف مع الحساب الفوري التلقائي -->
+      <div class="card-light rounded-2xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+          <div>
+            <h2 class="text-base sm:text-lg font-black text-slate-900">سعر الصرف المعتمد للباقات</h2>
+            <p class="text-xs text-slate-500 font-bold">بمجرد كتابة السعر يتم تحويل وتحديث كافة الباقات فورياً للتركي والسوري</p>
+          </div>
+          <button onclick="saveExchangeRates()" class="px-5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black shadow transition self-start sm:self-auto">
+            حفظ سعر الصرف
+          </button>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div class="bg-amber-50/70 p-4 rounded-xl border border-amber-200 space-y-1.5">
+            <label class="block text-xs font-black text-amber-800">سعر صرف الدولار مقابل التركي (₺):</label>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500 font-bold">$1 =</span>
+              <input type="number" step="0.1" id="rate-in-try" oninput="runCalculations()" class="w-full bg-white border border-amber-300 focus:border-amber-500 rounded-lg px-3 py-2 text-slate-900 font-black text-lg focus:outline-none shadow-sm">
+              <span class="text-xs text-amber-700 font-black">TL</span>
+            </div>
+          </div>
+
+          <div class="bg-emerald-50/70 p-4 rounded-xl border border-emerald-200 space-y-1.5">
+            <label class="block text-xs font-black text-emerald-800">سعر صرف الدولار مقابل السوري (ل.س):</label>
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-slate-500 font-bold">$1 =</span>
+              <input type="number" step="1" id="rate-in-syp" oninput="runCalculations()" class="w-full bg-white border border-emerald-300 focus:border-emerald-500 rounded-lg px-3 py-2 text-slate-900 font-black text-lg focus:outline-none shadow-sm">
+              <span class="text-xs text-emerald-700 font-black">ل.س</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- أزرار الإرسال المباشر عبر واتساب (كنص، وكصورة منسقة، و PDF) -->
+      <div class="card-light rounded-2xl p-5 sm:p-6 space-y-3">
+        <h3 class="text-sm font-black text-slate-800">إرسال وتصدير قائمة الأسعار الحالية:</h3>
+        <div class="flex flex-wrap gap-3">
+          <button onclick="sendRatesAsWhatsAppImage()" class="px-5 py-3 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs sm:text-sm font-black shadow-md shadow-emerald-600/20 flex items-center gap-2 transition">
+            <span>إرسال كصورة عبر واتساب</span>
+          </button>
+          <button onclick="shareRatesViaWhatsAppText()" class="px-5 py-3 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs sm:text-sm font-black shadow-md shadow-sky-600/20 flex items-center gap-2 transition">
+            <span>إرسال نص منسق للواتساب</span>
+          </button>
+          <button onclick="exportRatesAsPDF()" class="px-5 py-3 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs sm:text-sm font-black transition">
+            <span>حفظ كملف PDF</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- جداول المعاينة الحية للحسابات لجميع الأقسام (ديناميكية ومتجاوبة) -->
+      <div id="dynamic-pricing-tables-container" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- تملأ ديناميكياً بجميع الأقسام والباقات الحالية والجديدة -->
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
+         التبويب 2: القوالب السريعة ونماذج الإعلانات الإبداعية الثلاثة
+         ========================================================================= -->
+    <div id="tab-templates" class="tab-pane hidden space-y-6">
+      
+      <!-- إعداد رقم الواتساب الافتراضي -->
+      <div class="card-light rounded-2xl p-4 sm:p-5 space-y-3">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-2 border-b border-slate-100 gap-2">
+          <div>
+            <h3 class="font-black text-sm text-slate-900">رقم الواتساب المعتمد للإرسال</h3>
+            <p class="text-[11px] text-slate-500 font-bold">إن تركته فارغاً سيفتح الواتساب مباشرة لاختيار المشترك أو المجموعة</p>
+          </div>
+          <button onclick="saveTargetPhone()" class="px-4 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black transition self-start sm:self-auto">
+            حفظ الرقم
+          </button>
+        </div>
+        <input type="text" id="target-phone-input" class="w-full max-w-sm bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 font-bold text-xs focus:outline-none focus:border-sky-500 shadow-sm" placeholder="مثال: 905xxxxxxxxx">
+      </div>
+
+      <!-- اختيار وتعديل القالب السريع -->
+      <div class="card-light rounded-2xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-2">
+          <h3 class="font-black text-sm sm:text-base text-slate-900">إدارة وتحرير القوالب السريعة</h3>
+          <div class="flex items-center gap-2">
+            <button onclick="addNewCustomTemplate()" class="px-3.5 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-sky-700 border border-slate-300 text-xs font-black transition">
+              + إضافة قالب جديد
+            </button>
+            <button onclick="saveActiveTemplate()" class="px-4 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-black transition">
+              حفظ القالب الحالي
+            </button>
+          </div>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">اختر القالب:</label>
+            <select id="template-dropdown" onchange="onTemplateSelectChange()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2.5 text-slate-900 font-bold text-xs focus:outline-none focus:border-sky-500 shadow-sm">
+              <!-- يملأ ديناميكياً -->
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">عنوان القالب:</label>
+            <input type="text" id="template-title-in" oninput="syncCardLivePreview()" class="w-full bg-white border border-slate-300 rounded-xl px-3.5 py-2 text-slate-900 font-bold text-xs focus:outline-none focus:border-sky-500 shadow-sm">
+          </div>
+
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">نص الرسالة:</label>
+            <textarea id="template-text-in" rows="5" oninput="syncCardLivePreview()" class="w-full bg-white border border-slate-300 rounded-xl p-3 text-slate-900 font-bold text-xs leading-relaxed focus:outline-none focus:border-sky-500 shadow-sm"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- النماذج الإعلانية الجذابة الثلاثة مع اللوغو AL-Salam Net أعلى اليسار -->
+      <div class="card-light rounded-2xl p-5 sm:p-6 space-y-4">
+        <div class="pb-2 border-b border-slate-100">
+          <h3 class="font-black text-sm sm:text-base text-slate-900">اختيار شكل التصميم الإعلاني</h3>
+          <p class="text-xs text-slate-500 font-bold">اختر المظهر المناسب وسيتم إرفاق الشعار وتجهيز الصورة للإرسال الفوري</p>
+        </div>
+
+        <!-- أزرار اختيار الأنماط الثلاثة الإبداعية -->
+        <div class="flex flex-wrap gap-2.5">
+          <button onclick="changeAdTheme('yellow-red', this)" class="theme-btn active px-4 py-2.5 rounded-xl text-xs font-black border-2 border-red-600 bg-red-50 text-red-700 transition">
+            1. ورقة صفراء ممزقة وخلفية حمراء
+          </button>
+          <button onclick="changeAdTheme('blue-notebook', this)" class="theme-btn px-4 py-2.5 rounded-xl text-xs font-black border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition">
+            2. ورقة دفتر متعرجة وخلفية زرقاء
+          </button>
+          <button onclick="changeAdTheme('white-orange', this)" class="theme-btn px-4 py-2.5 rounded-xl text-xs font-black border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition">
+            3. ملاحظات سبورة وخلفية برتقالية
+          </button>
+        </div>
+
+        <!-- مسرح المعاينة الحية للبطاقة الإعلانية -->
+        <div class="p-4 sm:p-8 bg-slate-100 rounded-2xl border border-slate-200 flex justify-center overflow-x-auto">
+          
+          <!-- بطاقة الإعلان الحية القابلة للالتقاط -->
+          <div id="ad-capture-element" class="w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-torn-yellow-red text-right shadow-2xl relative">
+            
+            <!-- اللوغو بالإنجليزية أعلى اليسار AL-Salam Net -->
+            <div class="flex justify-between items-center mb-4">
+              <div class="red-pushpin"></div>
+              <div class="bg-black/40 backdrop-blur-sm border border-white/30 text-white px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
+                AL-Salam Net
+              </div>
+            </div>
+
+            <div class="torn-paper p-5 sm:p-6 rounded-t-xl text-slate-950 relative">
+              <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-amber-950 text-center border-b-2 border-amber-300 pb-2 mb-3"></h5>
+              <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-900 leading-relaxed whitespace-pre-line"></div>
+              
+              <div class="mt-6 pt-2.5 border-t border-amber-300/80 flex justify-between items-center text-[11px] font-black text-amber-950">
+                <span>شبكة السلام نت</span>
+                <span id="card-preview-date"></span>
+              </div>
+            </div>
+
+            <div class="text-center text-white/90 text-xs font-bold mt-3">
+              شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
+            </div>
+          </div>
+
+        </div>
+
+        <!-- أزرار إرسال القالب كصورة أو كنص عبر واتساب -->
+        <div class="flex flex-wrap gap-3 pt-2">
+          <button onclick="sendTemplateAsWhatsAppImage()" class="px-6 py-3.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white text-xs sm:text-sm font-black shadow-md shadow-emerald-600/20 flex items-center gap-2 transition">
+            <span>إرسال كصورة عبر واتساب</span>
+          </button>
+          <button onclick="sendActiveTemplateWhatsAppText()" class="px-5 py-3.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs sm:text-sm font-black shadow-md shadow-sky-600/20 transition">
+            إرسال القالب كنص عبر واتساب
+          </button>
+          <button onclick="downloadActiveTemplateImageOnly()" class="px-4 py-3.5 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 border border-slate-300 text-xs font-bold transition">
+            تحميل كصورة لجهازك
+          </button>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- =========================================================================
+         التبويب 3: تعديل قيم الباقات الأساسية بالدولار ($)
+         ========================================================================= -->
+    <div id="tab-manage-plans" class="tab-pane hidden space-y-6">
+      
+      <!-- بطاقة إضافة قسم جديد وأدوات التحكم -->
+      <div class="card-light rounded-2xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between pb-3 border-b border-slate-100 gap-3">
+          <div>
+            <h3 class="font-black text-base sm:text-lg text-slate-900">إدارة الباقات والأقسام بالدولار ($)</h3>
+            <p class="text-xs text-slate-500 font-bold">يمكنك إضافة باقات جديدة لأي قسم، أو إنشاء قسم جديد كلياً (مثل: باقات يمن فايبر Fiber أو 4G)</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-2 self-start sm:self-auto">
+            <button onclick="toggleAddCategoryModal(true)" class="px-4 py-2.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs sm:text-sm font-black shadow-sm flex items-center gap-1.5 transition">
+              <span>+ إضافة قسم جديد (فايبر...)</span>
+            </button>
+            <button onclick="saveCustomPackageDollars()" class="px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs sm:text-sm font-black shadow-sm transition">
+              حفظ كافة الباقات
+            </button>
+          </div>
+        </div>
+
+        <!-- بطاقات الأقسام والباقات الديناميكية -->
+        <div id="dynamic-categories-management" class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <!-- تملأ برمجياً بالأقسام وباقاتها مع أزرار الإضافة والحذف لكل قسم -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- نافذة منبثقة أنيقة لإضافة قسم جديد (فايبر / 4G / لاسلكي ...) -->
+    <div id="modal-add-category" class="fixed inset-0 z-[250] bg-slate-900/60 backdrop-blur-sm hidden flex items-center justify-center p-4">
+      <div class="bg-white w-full max-w-md rounded-2xl shadow-2xl border border-slate-200 overflow-hidden">
+        <div class="bg-slate-900 text-white px-5 py-4 flex justify-between items-center">
+          <h4 class="font-black text-sm sm:text-base">إضافة قسم باقات جديد</h4>
+          <button onclick="toggleAddCategoryModal(false)" class="text-slate-400 hover:text-white font-black text-lg">✕</button>
+        </div>
+        <div class="p-5 space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">اسم القسم بالكامل:</label>
+            <input type="text" id="new-cat-name" placeholder="مثال: باقات يمن فايبر (Fiber)" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">الشارة التوضيحية (Badge):</label>
+            <input type="text" id="new-cat-badge" placeholder="مثال: فايبر" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-sky-500">
+          </div>
+          <div>
+            <label class="block text-xs font-bold text-slate-700 mb-1">النمط اللوني للقسم:</label>
+            <select id="new-cat-color" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2 text-xs font-bold text-slate-900 focus:outline-none focus:border-sky-500">
+              <option value="indigo">أزرق نيلي (Indigo) - مناسب للفايبر</option>
+              <option value="purple">بنفسجي (Purple)</option>
+              <option value="teal">فيروزي (Teal)</option>
+              <option value="amber">برتقالي ذهبي (Amber)</option>
+              <option value="rose">وردي أنيق (Rose)</option>
+              <option value="sky">سماوي (Sky)</option>
+              <option value="emerald">زمردي (Emerald)</option>
+            </select>
+          </div>
+          <div class="flex justify-end gap-2 pt-2 border-t border-slate-100">
+            <button onclick="toggleAddCategoryModal(false)" class="px-4 py-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 text-xs font-bold transition">
+              إلغاء
+            </button>
+            <button onclick="confirmAddNewCategory()" class="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-black shadow transition">
+              إنشاء القسم
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- الحاوية المخصصة لتوليد صورة الجدول المنسق الفاخر مع اللوغو AL-Salam Net وملف الـ PDF -->
+  <div id="export-rates-canvas">
+    <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #0284c7; padding-bottom: 14px; margin-bottom: 20px;">
+      <!-- يمين: اسم الشبكة بالعربي -->
+      <div style="text-align: right;">
+        <h2 style="color: #0f172a; margin: 0; font-size: 26px; font-weight: 900; line-height: 1.2;">شبكة السلام نت للاتصالات</h2>
+        <p style="color: #0284c7; margin: 4px 0 0; font-weight: 800; font-size: 15px;">قائمة أسعار وباقات الإنترنت المعتمدة لهذا الشهر</p>
+        <div id="export-date-badge" style="color: #64748b; font-weight: bold; font-size: 13px; margin-top: 4px;"></div>
+      </div>
+
+      <!-- يسار: لوغو AL-Salam Net بالإنجليزية -->
+      <div style="text-align: left;">
+        <div style="background: linear-gradient(135deg, #0284c7, #0f172a); color: white; padding: 10px 18px; border-radius: 12px; font-family: 'Montserrat', sans-serif; font-weight: 900; font-size: 17px; letter-spacing: 0.5px; box-shadow: 0 4px 10px rgba(2, 132, 199, 0.25);">
+          AL-Salam Net
+        </div>
+        <div style="font-size: 11px; color: #64748b; font-weight: bold; text-align: center; margin-top: 4px;">High Speed Internet</div>
+      </div>
+    </div>
+
+    <!-- الجداول المنسقة ديناميكياً لجميع الأقسام (فضائي، ADSL، فايبر، وأي قسم مضاف) -->
+    <div id="canvas-categories-wrapper" style="display: flex; gap: 16px; flex-wrap: wrap;">
+      <!-- يملأ ديناميكياً بجميع جداول الأقسام -->
+    </div>
+
+    <!-- شريط الصرف والتذييل -->
+    <div style="margin-top: 18px; background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px; padding: 10px 16px; display: flex; justify-content: space-between; align-items: center; font-size: 12.5px; font-weight: 800; color: #334155;">
+      <span id="canvas-rate-summary">سعر الصرف: $1 = 48.0 ₺ | $1 = 133.0 ل.س</span>
+      <span>شبكة السلام نت • أسرع إنترنت وأعلى استقرار</span>
+    </div>
+  </div>
+
+  <script>
+    /* البيانات الافتراضية المعتمدة لشبكة السلام نت (مع معمارية الفئات الديناميكية) */
+    const INITIAL_APP_DATA = {
+      rates: { try: 48.0, syp: 133.0 },
+      phone: "",
+      categories: [
+        {
+          id: "sat",
+          name: "باقات فضائي (Satellite)",
+          badge: "فضائي",
+          color: "emerald",
+          plans: [
+            { speed: "1M", usd: 5 },
+            { speed: "2M", usd: 8 },
+            { speed: "3M", usd: 12 },
+            { speed: "4M", usd: 15 },
+            { speed: "5M", usd: 18 },
+            { speed: "6M", usd: 21 }
+          ]
+        },
+        {
+          id: "adsl",
+          name: "باقات الخطوط السلكية ADSL",
+          badge: "سلكي",
+          color: "sky",
+          plans: [
+            { speed: "1M DSL", usd: 4 },
+            { speed: "2M DSL", usd: 6 },
+            { speed: "3M DSL", usd: 8 },
+            { speed: "4M DSL", usd: 10 },
+            { speed: "5M DSL", usd: 12 },
+            { speed: "6M DSL", usd: 14 },
+            { speed: "7M DSL", usd: 16 },
+            { speed: "8M DSL", usd: 18 },
+            { speed: "9M DSL", usd: 20 },
+            { speed: "10M DSL", usd: 22 }
+          ]
+        }
+      ],
+      templates: [
+        {
+          title: "تنبيه هام بشأن العواصف الرعدية",
+          text: "السلام عليكم ورحمة الله وبركاته\nنذكر الإخوة المشتركين بضرورة إطفاء الراوترات الخاصة أثناء العواصف الرعدية وإزالة كافة الكوابل منها (بعد التأكد من ترتيب توصيلها) للحفاظ عليها من التلف.\nالسلام نت"
+        },
+        {
+          title: "تنبيه موعد إيقاف الاشتراكات والدوام",
+          text: "السلام عليكم\nنذكر الإخوة المشتركين بأن اليوم الساعة 11:00 قبل الظهر ستتوقف جميع الاشتراكات غير المدفوعة.\nمتواجدون اليوم في المكتب بشكل مستمر من 10 صباحاً حتى 9 مساءً.\nبعد إغلاق المكتب في التاسعة مساءً لن يكون تسديد الفواتير متاحاً حتى صباح السبت بإذن الله.\nالجمعة عطلة."
+        },
+        {
+          title: "فصل الاشتراكات وعطلة الجمعة (شام كاش)",
+          text: "السلام عليكم\nنذكر الإخوة المشتركين بأن غداً 3-9-2026 الساعة 11 ظهراً موعد الفصل التلقائي للاشتراكات غير المدفوعة.\nملاحظة:\nيوم الجمعة 4-9-2026 عطلة لا يوجد تسديد فواتير في المكتب ولا عن طريق شام كاش.\nالسلام نت"
+        },
+        {
+          title: "إشعار انقطاع طارئ وصيانة",
+          text: "السلام عليكم ورحمة الله وبركاته\nمشتركينا الكرام، نلفت عنايتكم إلى حدوث انقطاع مؤقت في الكابل الرئيسي المغذي للشبكة، وفريق الصيانة يباشر المعالجة فوراً وستعود الخدمة بأسرع وقت.\nشاكرين تفهمكم وحسن صبركم.\nشبكة السلام نت"
+        },
+        {
+          title: "إشعار إعادة وصل واستقرار الخدمة",
+          text: "السلام عليكم ورحمة الله وبركاته\nتم إصلاح العطل وعودة خدمة الإنترنت للعمل بكفاءة واستقرار تام.\nفي حال واجهتكم أي مشكلة يرجى إعادة تشغيل الراوتر لمدة دقيقة.\nشكراً لصبركم - شبكة السلام نت"
+        }
+      ]
+    };
+
+    /* تحميل البيانات من التخزين التلقائي المحلي مع المزامنة الذكية */
+    let ProgramState = JSON.parse(localStorage.getItem('Alsalam_Light_Tool_V2')) || INITIAL_APP_DATA;
+
+    // ترقية البيانات السابقة إذا كانت بصيغة sat و adsl المنفصلة
+    if (!ProgramState.categories && (ProgramState.sat || ProgramState.adsl)) {
+      ProgramState.categories = [
+        {
+          id: "sat",
+          name: "باقات فضائي (Satellite)",
+          badge: "فضائي",
+          color: "emerald",
+          plans: ProgramState.sat || []
+        },
+        {
+          id: "adsl",
+          name: "باقات الخطوط السلكية ADSL",
+          badge: "سلكي",
+          color: "sky",
+          plans: ProgramState.adsl || []
+        }
+      ];
+    }
+
+    function saveState(msg = "تم حفظ التغييرات بنجاح!") {
+      localStorage.setItem('Alsalam_Light_Tool_V2', JSON.stringify(ProgramState));
+      showToast(msg);
+      runCalculations();
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('app-toast');
+      const msg = document.getElementById('toast-message');
+      msg.innerText = text;
+      toast.classList.remove('hidden');
+      setTimeout(() => { toast.classList.add('hidden'); }, 2800);
+    }
+
+    function resetToDefaults() {
+      ProgramState = JSON.parse(JSON.stringify(INITIAL_APP_DATA));
+      saveState("تمت استعادة القيم الافتراضية بنجاح!");
+      loadAppData();
+    }
+
+    const COLOR_THEMES = {
+      emerald: {
+        border: "border-emerald-200",
+        headerBg: "bg-emerald-50",
+        headerText: "text-emerald-900",
+        badgeBg: "bg-emerald-600",
+        speedText: "text-emerald-800",
+        canvasHeader: "#065f46",
+        canvasBorder: "#a7f3d0",
+        canvasHeadTr: "#ecfdf5"
+      },
+      sky: {
+        border: "border-sky-200",
+        headerBg: "bg-sky-50",
+        headerText: "text-sky-900",
+        badgeBg: "bg-sky-600",
+        speedText: "text-sky-800",
+        canvasHeader: "#1e3a8a",
+        canvasBorder: "#bae6fd",
+        canvasHeadTr: "#f0f9ff"
+      },
+      indigo: {
+        border: "border-indigo-200",
+        headerBg: "bg-indigo-50",
+        headerText: "text-indigo-900",
+        badgeBg: "bg-indigo-600",
+        speedText: "text-indigo-800",
+        canvasHeader: "#3730a3",
+        canvasBorder: "#c7d2fe",
+        canvasHeadTr: "#eef2ff"
+      },
+      purple: {
+        border: "border-purple-200",
+        headerBg: "bg-purple-50",
+        headerText: "text-purple-900",
+        badgeBg: "bg-purple-600",
+        speedText: "text-purple-800",
+        canvasHeader: "#581c87",
+        canvasBorder: "#e9d5ff",
+        canvasHeadTr: "#faf5ff"
+      },
+      teal: {
+        border: "border-teal-200",
+        headerBg: "bg-teal-50",
+        headerText: "text-teal-900",
+        badgeBg: "bg-teal-600",
+        speedText: "text-teal-800",
+        canvasHeader: "#115e59",
+        canvasBorder: "#99f6e4",
+        canvasHeadTr: "#f0fdfa"
+      },
+      amber: {
+        border: "border-amber-200",
+        headerBg: "bg-amber-50",
+        headerText: "text-amber-900",
+        badgeBg: "bg-amber-600",
+        speedText: "text-amber-800",
+        canvasHeader: "#78350f",
+        canvasBorder: "#fde68a",
+        canvasHeadTr: "#fffbeb"
+      },
+      rose: {
+        border: "border-rose-200",
+        headerBg: "bg-rose-50",
+        headerText: "text-rose-900",
+        badgeBg: "bg-rose-600",
+        speedText: "text-rose-800",
+        canvasHeader: "#9f1239",
+        canvasBorder: "#fecdd3",
+        canvasHeadTr: "#fff1f2"
+      }
+    };
+
+    function getColorTheme(key) {
+      return COLOR_THEMES[key] || COLOR_THEMES.sky;
+    }
+
+    /* =========================================================================
+       التبديل بين التبويبات الرئيسية
+       ========================================================================= */
+    window.switchTab = function(tabId, btn) {
+      document.querySelectorAll('.app-tab').forEach(b => {
+        b.className = "app-tab px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black text-slate-600 hover:text-slate-900 hover:bg-slate-100 border border-slate-200 transition";
+      });
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.add('hidden'));
+
+      btn.className = "app-tab active px-5 py-2.5 rounded-xl text-xs sm:text-sm font-black bg-sky-600 text-white shadow-sm shadow-sky-600/30 transition";
+      const target = document.getElementById(tabId);
+      if (target) target.classList.remove('hidden');
+    };
+
+    function loadAppData() {
+      document.getElementById('rate-in-try').value = ProgramState.rates.try;
+      document.getElementById('rate-in-syp').value = ProgramState.rates.syp;
+      document.getElementById('target-phone-input').value = ProgramState.phone || "";
+
+      renderDynamicPackageManagement();
+      populateTemplatesDropdown();
+      runCalculations();
+    }
+
+    window.runCalculations = function() {
+      const tryRate = parseFloat(document.getElementById('rate-in-try')?.value) || ProgramState.rates.try;
+      const sypRate = parseFloat(document.getElementById('rate-in-syp')?.value) || ProgramState.rates.syp;
+
+      const container = document.getElementById('dynamic-pricing-tables-container');
+      const canvasWrapper = document.getElementById('canvas-categories-wrapper');
+      container.innerHTML = "";
+      canvasWrapper.innerHTML = "";
+
+      ProgramState.categories.forEach((cat, catIdx) => {
+        const theme = getColorTheme(cat.color);
+
+        // 1. إنشاء جدول العرض التفاعلي في التبويب الأول
+        let rowsHtml = "";
+        let canvasRowsHtml = "";
+
+        cat.plans.forEach((p, pIdx) => {
+          const tryVal = Math.round(p.usd * tryRate);
+          const sypVal = Math.round(p.usd * sypRate);
+
+          rowsHtml += `
+            <tr class="${pIdx % 2 === 0 ? 'bg-white' : 'bg-slate-50/60'} hover:bg-slate-100/60 transition">
+              <td class="py-3 px-3 text-right font-black ${theme.speedText}">${p.speed}</td>
+              <td class="py-3 px-2 text-slate-900 font-bold">$${p.usd}</td>
+              <td class="py-3 px-2 text-amber-700 font-black">${tryVal} ₺</td>
+              <td class="py-3 px-2 text-emerald-700 font-black">${sypVal} ل.س</td>
+            </tr>
+          `;
+
+          canvasRowsHtml += `
+            <tr style="border-bottom: 1px solid #e2e8f0; ${pIdx % 2 === 1 ? 'background: #f8fafc;' : ''}">
+              <td style="padding: 8px; font-weight: 900; color: ${theme.canvasHeader};">${p.speed}</td>
+              <td style="color: #0284c7; font-weight: bold;">$${p.usd}</td>
+              <td style="color: #b45309; font-weight: 900;">${tryVal} ₺</td>
+              <td style="color: #047857; font-weight: 900;">${sypVal}</td>
+            </tr>
+          `;
+        });
+
+        // كرت الجدول في واجهة البرنامج
+        container.innerHTML += `
+          <div class="card-light rounded-2xl overflow-hidden border ${theme.border} shadow-sm">
+            <div class="${theme.headerBg} p-4 border-b border-slate-100 flex justify-between items-center">
+              <h4 class="font-black text-sm sm:text-base ${theme.headerText}">${cat.name}</h4>
+              <span class="text-[11px] font-black ${theme.badgeBg} text-white px-3 py-0.5 rounded-full">${cat.badge}</span>
+            </div>
+            <div class="overflow-x-auto">
+              <table class="w-full text-center text-xs sm:text-sm">
+                <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 font-black">
+                  <tr>
+                    <th class="py-3 px-3 text-right">السرعة</th>
+                    <th class="py-3 px-2">السعر $</th>
+                    <th class="py-3 px-2 text-amber-700">السعر تركي</th>
+                    <th class="py-3 px-2 text-emerald-700">السعر سوري</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-100 font-bold">
+                  ${rowsHtml || `<tr><td colspan="4" class="py-4 text-slate-400">لا توجد باقات مضافة بعد</td></tr>`}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        // جدول القسم داخل كانفاس التصدير المباشر كصورة
+        const flexWidth = ProgramState.categories.length === 1 ? "100%" : (ProgramState.categories.length === 2 ? "calc(50% - 8px)" : "calc(33.333% - 11px)");
+        canvasWrapper.innerHTML += `
+          <div style="flex: 1 1 ${flexWidth}; min-width: 260px; border: 2px solid ${theme.canvasBorder}; border-radius: 14px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.02);">
+            <div style="background: ${theme.canvasHeader}; color: white; padding: 10px; text-align: center; font-weight: 900; font-size: 14.5px;">
+              ${cat.name}
+            </div>
+            <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 13px;">
+              <thead>
+                <tr style="background: ${theme.canvasHeadTr}; font-weight: 900; color: ${theme.canvasHeader}; border-bottom: 2px solid ${theme.canvasBorder};">
+                  <th style="padding: 8px;">السرعة</th>
+                  <th>السعر $</th>
+                  <th>السعر تركي</th>
+                  <th>السعر سوري</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${canvasRowsHtml || `<tr><td colspan="4" style="padding: 10px; color: #94a3b8;">لا توجد باقات</td></tr>`}
+              </tbody>
+            </table>
+          </div>
+        `;
+      });
+
+      const todayStr = new Date().toLocaleDateString('ar-SY', { year: 'numeric', month: 'long', day: 'numeric' });
+      document.getElementById('export-date-badge').innerText = "تاريخ التحديث: " + todayStr;
+      document.getElementById('canvas-rate-summary').innerText = `سعر الصرف المعتمد: $1 = ${tryRate} ₺ | $1 = ${sypRate} ل.س`;
+    };
+
+    window.saveExchangeRates = function() {
+      const t = parseFloat(document.getElementById('rate-in-try').value);
+      const s = parseFloat(document.getElementById('rate-in-syp').value);
+      if (t) ProgramState.rates.try = t;
+      if (s) ProgramState.rates.syp = s;
+      saveState("تم حفظ سعر الصرف وحساب كافة الباقات فورياً!");
+    };
+
+    /* =========================================================================
+       إدارة الأقسام والباقات بالدولار (إضافة، تعديل، حذف)
+       ========================================================================= */
+    function renderDynamicPackageManagement() {
+      const box = document.getElementById('dynamic-categories-management');
+      box.innerHTML = "";
+
+      ProgramState.categories.forEach((cat, catIdx) => {
+        const theme = getColorTheme(cat.color);
+
+        let plansInputsHtml = "";
+        cat.plans.forEach((plan, planIdx) => {
+          plansInputsHtml += `
+            <div class="flex items-center gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+              <input type="text" id="cat-${catIdx}-name-${planIdx}" value="${plan.speed}" placeholder="السرعة" class="w-24 bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-900 font-bold text-xs shadow-sm">
+              <span class="text-xs text-slate-400 font-bold">:</span>
+              <input type="number" step="0.5" id="cat-${catIdx}-usd-${planIdx}" value="${plan.usd}" placeholder="السعر" class="w-20 bg-white border border-slate-300 rounded-lg px-2 py-1 text-slate-900 font-black text-xs shadow-sm text-center">
+              <span class="text-xs text-slate-500 font-bold">$</span>
+              <button onclick="removePlanFromCategory(${catIdx}, ${planIdx})" title="حذف هذه الباقة" class="mr-auto w-7 h-7 flex items-center justify-center rounded-lg bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-200 text-xs font-black transition">
+                ✕
+              </button>
+            </div>
+          `;
+        });
+
+        box.innerHTML += `
+          <div class="bg-white p-4 rounded-2xl border ${theme.border} shadow-sm space-y-3">
+            <div class="flex items-center justify-between pb-2 border-b border-slate-100 gap-2">
+              <div class="flex items-center gap-2">
+                <span class="text-xs font-black ${theme.badgeBg} text-white px-2.5 py-0.5 rounded-md">${cat.badge}</span>
+                <h4 class="font-black text-xs sm:text-sm text-slate-900">${cat.name}</h4>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="addPlanToCategory(${catIdx})" class="px-2.5 py-1 rounded-lg bg-sky-50 hover:bg-sky-600 text-sky-700 hover:text-white border border-sky-200 text-[11px] font-black transition">
+                  + إضافة باقة
+                </button>
+                <button onclick="removeCategory(${catIdx})" title="حذف هذا القسم بالكامل" class="px-2.5 py-1 rounded-lg bg-rose-50 hover:bg-rose-600 text-rose-600 hover:text-white border border-rose-200 text-[11px] font-black transition">
+                  حذف القسم
+                </button>
+              </div>
+            </div>
+
+            <div class="space-y-2 max-h-[380px] overflow-y-auto pr-1">
+              ${plansInputsHtml || `<div class="p-3 text-center text-xs text-slate-400 font-bold bg-slate-50 rounded-xl">لا توجد باقات في هذا القسم، اضغط على زر (+ إضافة باقة) بالأعلى</div>`}
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    // حفظ قيم وأسماء الباقات
+    window.saveCustomPackageDollars = function() {
+      ProgramState.categories.forEach((cat, catIdx) => {
+        cat.plans.forEach((plan, planIdx) => {
+          const speedEl = document.getElementById(`cat-${catIdx}-name-${planIdx}`);
+          const usdEl = document.getElementById(`cat-${catIdx}-usd-${planIdx}`);
+          if (speedEl && usdEl) {
+            plan.speed = speedEl.value.trim() || plan.speed;
+            plan.usd = parseFloat(usdEl.value) || plan.usd;
+          }
+        });
+      });
+      saveState("تم حفظ كافة الباقات والأقسام بنجاح!");
+    };
+
+    // إضافة باقة جديدة لقسم محدد
+    window.addPlanToCategory = function(catIdx) {
+      const cat = ProgramState.categories[catIdx];
+      if (!cat) return;
+      
+      const newIndex = cat.plans.length + 1;
+      cat.plans.push({
+        speed: `${newIndex}M`,
+        usd: 10
+      });
+      renderDynamicPackageManagement();
+      runCalculations();
+      showToast(`تمت إضافة باقة جديدة إلى: ${cat.name}`);
+    };
+
+    // حذف باقة من قسم
+    window.removePlanFromCategory = function(catIdx, planIdx) {
+      const cat = ProgramState.categories[catIdx];
+      if (!cat) return;
+      cat.plans.splice(planIdx, 1);
+      renderDynamicPackageManagement();
+      runCalculations();
+      showToast("تم حذف الباقة بنجاح.");
+    };
+
+    // إضافة قسم جديد عبر النافذة المنبثقة
+    window.toggleAddCategoryModal = function(show) {
+      const modal = document.getElementById('modal-add-category');
+      if (show) {
+        document.getElementById('new-cat-name').value = "";
+        document.getElementById('new-cat-badge').value = "";
+        modal.classList.remove('hidden');
+      } else {
+        modal.classList.add('hidden');
+      }
+    };
+
+    window.confirmAddNewCategory = function() {
+      const name = document.getElementById('new-cat-name').value.trim();
+      const badge = document.getElementById('new-cat-badge').value.trim();
+      const color = document.getElementById('new-cat-color').value;
+
+      if (!name) {
+        showToast("يرجى كتابة اسم القسم!");
+        return;
+      }
+
+      ProgramState.categories.push({
+        id: "cat_" + Date.now(),
+        name: name,
+        badge: badge || "فايبر",
+        color: color,
+        plans: [
+          { speed: "10M", usd: 15 },
+          { speed: "20M", usd: 25 },
+          { speed: "30M", usd: 35 }
+        ]
+      });
+
+      toggleAddCategoryModal(false);
+      renderDynamicPackageManagement();
+      runCalculations();
+      saveState(`تمت إضافة قسم (${name}) بنجاح!`);
+    };
+
+    // حذف قسم بالكامل
+    window.removeCategory = function(catIdx) {
+      if (ProgramState.categories.length <= 1) {
+        showToast("يجب الإبقاء على قسم واحد على الأقل في البرنامج!");
+        return;
+      }
+      const catName = ProgramState.categories[catIdx].name;
+      ProgramState.categories.splice(catIdx, 1);
+      renderDynamicPackageManagement();
+      runCalculations();
+      saveState(`تم حذف ${catName} بنجاح.`);
+    };
+
+    function getWhatsAppDirectUrl(captionText = "") {
+      const phone = (ProgramState.phone || "").replace(/[^0-9]/g, '');
+      const encoded = encodeURIComponent(captionText);
+      return phone ? `https://wa.me/${phone}?text=${encoded}` : `https://api.whatsapp.com/send?text=${encoded}`;
+    }
+
+    async function shareElementAsWhatsAppImage(domElement, filename, captionText) {
+      showToast("جاري تجهيز الصورة للإرسال عبر واتساب...");
+      
+      try {
+        const canvas = await html2canvas(domElement, {
+          scale: 2.5,
+          useCORS: true,
+          backgroundColor: null
+        });
+
+        canvas.toBlob(async (blob) => {
+          if (!blob) {
+            showToast("حدث خطأ أثناء معالجة الصورة!");
+            return;
+          }
+
+          const file = new File([blob], filename, { type: 'image/png' });
+
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            try {
+              await navigator.share({
+                files: [file],
+                title: 'شبكة السلام نت',
+                text: captionText
+              });
+              showToast("تم فتح المشاركة عبر واتساب بنجاح!");
+              return;
+            } catch (err) {
+              if (err.name !== 'AbortError') {
+                console.log("fallback share", err);
+              }
+            }
+          }
+
+          const a = document.createElement('a');
+          a.href = URL.createObjectURL(blob);
+          a.download = filename;
+          a.click();
+
+          showToast("تم تنزيل الصورة، جاري فتح الواتساب لإرفاقها...");
+          setTimeout(() => {
+            window.open(getWhatsAppDirectUrl(captionText), '_blank');
+          }, 800);
+
+        }, 'image/png');
+
+      } catch (error) {
+        console.error("Export error:", error);
+        showToast("تعذر إنشاء الصورة، يرجى المحاولة ثانية.");
+      }
+    }
+
+    window.sendRatesAsWhatsAppImage = function() {
+      const canvasNode = document.getElementById('export-rates-canvas');
+      canvasNode.style.position = 'static';
+      canvasNode.style.left = '0';
+      canvasNode.style.top = '0';
+
+      const today = new Date().toLocaleDateString('ar-SY');
+      const caption = `السلام عليكم ورحمة الله وبركاته\nشبكة السلام نت\nأسعار الباقات المعتمدة لهذا الشهر (${today})`;
+
+      shareElementAsWhatsAppImage(canvasNode, `اسعار_شبكة_السلام_نت_${Date.now()}.png`, caption)
+        .finally(() => {
+          canvasNode.style.position = 'absolute';
+          canvasNode.style.left = '-9999px';
+          canvasNode.style.top = '-9999px';
+        });
+    };
+
+    window.shareRatesViaWhatsAppText = function() {
+      const today = new Date().toLocaleDateString('ar-SY', { year: 'numeric', month: 'numeric', day: 'numeric' });
+      let text = `السلام عليكم ورحمة الله وبركاته\nشبكة السلام نت\nتاريخ اليوم: ${today}\n\nأسعار الباقات لهذا الشهر:\n`;
+
+      ProgramState.categories.forEach(cat => {
+        text += `\n*${cat.name}:*\n`;
+        cat.plans.forEach(p => {
+          const tr = Math.round(p.usd * ProgramState.rates.try);
+          const sy = Math.round(p.usd * ProgramState.rates.syp);
+          text += `▪️ ${p.speed}: $${p.usd} | ${tr} ₺ | ${sy} ل.س\n`;
+        });
+      });
+
+      text += `\nسعر الصرف المعتمد: $1 = ${ProgramState.rates.try} ₺ | $1 = ${ProgramState.rates.syp} ل.س\nشبكة السلام نت - نسعد بخدمتكم دائماً`;
+      window.open(getWhatsAppDirectUrl(text), '_blank');
+    };
+
+    window.exportRatesAsPDF = function() {
+      const canvasNode = document.getElementById('export-rates-canvas');
+      canvasNode.style.position = 'static';
+      canvasNode.style.left = '0';
+      canvasNode.style.top = '0';
+
+      html2canvas(canvasNode, { scale: 2.5 }).then(canvas => {
+        canvasNode.style.position = 'absolute';
+        canvasNode.style.left = '-9999px';
+        canvasNode.style.top = '-9999px';
+
+        const imgData = canvas.toDataURL('image/png');
+        const { jsPDF } = window.jspdf;
+        const pdf = new jsPDF('p', 'mm', 'a4');
+        const width = pdf.internal.pageSize.getWidth();
+        const imgProps = pdf.getImageProperties(imgData);
+        const height = (imgProps.height * width) / imgProps.width;
+
+        pdf.addImage(imgData, 'PNG', 0, 10, width, height);
+        pdf.save(`باقات_السلام_نت_${Date.now()}.pdf`);
+        showToast("تم حفظ مستند PDF بنجاح!");
+      });
+    };
+
+    // 2. إرسال القالب الحالي كصورة عبر واتساب
+    window.sendTemplateAsWhatsAppImage = function() {
+      const card = document.getElementById('ad-capture-element');
+      const title = document.getElementById('template-title-in').value.trim();
+      const text = document.getElementById('template-text-in').value.trim();
+      const caption = `*${title}*\n\n${text}\n\nشبكة السلام نت`;
+
+      shareElementAsWhatsAppImage(card, `اعلان_السلام_نت_${Date.now()}.png`, caption);
+    };
+
+    // 3. تحميل صورة القالب فقط إلى الجهاز
+    window.downloadActiveTemplateImageOnly = function() {
+      const card = document.getElementById('ad-capture-element');
+      html2canvas(card, { scale: 2.5 }).then(canvas => {
+        const a = document.createElement('a');
+        a.download = `اعلان_السلام_نت_${Date.now()}.png`;
+        a.href = canvas.toDataURL('image/png');
+        a.click();
+        showToast("تم تحميل صورة الإعلان إلى جهازك!");
+      });
+    };
+
+    function populateTemplatesDropdown() {
+      const select = document.getElementById('template-dropdown');
+      select.innerHTML = "";
+      ProgramState.templates.forEach((t, i) => {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.innerText = t.title;
+        select.appendChild(opt);
+      });
+      onTemplateSelectChange();
+    }
+
+    window.onTemplateSelectChange = function() {
+      const idx = document.getElementById('template-dropdown').value;
+      const t = ProgramState.templates[idx];
+      if (t) {
+        document.getElementById('template-title-in').value = t.title;
+        document.getElementById('template-text-in').value = t.text;
+        syncCardLivePreview();
+      }
+    };
+
+    window.syncCardLivePreview = function() {
+      const title = document.getElementById('template-title-in').value;
+      const text = document.getElementById('template-text-in').value;
+      document.getElementById('card-preview-title').innerText = title;
+      document.getElementById('card-preview-body').innerText = text;
+    };
+
+    window.addNewCustomTemplate = function() {
+      ProgramState.templates.push({
+        title: "قالب إشعار جديد",
+        text: "السلام عليكم ورحمة الله وبركاته\nنص الإشعار السريع يكتب هنا...\nشبكة السلام نت"
+      });
+      populateTemplatesDropdown();
+      document.getElementById('template-dropdown').value = ProgramState.templates.length - 1;
+      onTemplateSelectChange();
+      showToast("تمت إضافة قالب جديد، يمكنك تعديل عنوانه ونصه الآن.");
+    };
+
+    window.saveActiveTemplate = function() {
+      const idx = document.getElementById('template-dropdown').value;
+      ProgramState.templates[idx] = {
+        title: document.getElementById('template-title-in').value.trim(),
+        text: document.getElementById('template-text-in').value.trim()
+      };
+      saveState("تم حفظ القالب بنجاح!");
+      populateTemplatesDropdown();
+      document.getElementById('template-dropdown').value = idx;
+    };
+
+    window.saveTargetPhone = function() {
+      ProgramState.phone = document.getElementById('target-phone-input').value.trim();
+      saveState("تم حفظ رقم الواتساب المعتمد للإرسال!");
+    };
+
+    window.sendActiveTemplateWhatsAppText = function() {
+      const title = document.getElementById('template-title-in').value;
+      const text = document.getElementById('template-text-in').value;
+      window.open(getWhatsAppDirectUrl(`*${title}*\n\n${text}`), '_blank');
+    };
+
+    // تبديل شكل وتصميم بطاقة الإعلان الحية
+    window.changeAdTheme = function(themeKey, btn) {
+      document.querySelectorAll('.theme-btn').forEach(b => {
+        b.className = "theme-btn px-4 py-2.5 rounded-xl text-xs font-black border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 transition";
+      });
+      btn.className = "theme-btn active px-4 py-2.5 rounded-xl text-xs font-black border-2 border-sky-600 bg-sky-50 text-sky-700 transition";
+
+      const target = document.getElementById('ad-capture-element');
+      const dateStr = new Date().toLocaleDateString('ar-SY');
+
+      if (themeKey === 'yellow-red') {
+        target.className = "w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-torn-yellow-red text-right shadow-2xl relative";
+        target.innerHTML = `
+          <div class="flex justify-between items-center mb-4">
+            <div class="red-pushpin"></div>
+            <div class="bg-black/40 backdrop-blur-sm border border-white/30 text-white px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
+              AL-Salam Net
+            </div>
+          </div>
+          <div class="torn-paper p-5 sm:p-6 rounded-t-xl text-slate-950 relative">
+            <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-amber-950 text-center border-b-2 border-amber-300 pb-2 mb-3"></h5>
+            <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-900 leading-relaxed whitespace-pre-line"></div>
+            <div class="mt-6 pt-2.5 border-t border-amber-300/80 flex justify-between items-center text-[11px] font-black text-amber-950">
+              <span>شبكة السلام نت</span>
+              <span id="card-preview-date">${dateStr}</span>
+            </div>
+          </div>
+          <div class="text-center text-white/90 text-xs font-bold mt-3">
+            شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
+          </div>
+        `;
+      } else if (themeKey === 'blue-notebook') {
+        target.className = "w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-notebook-blue text-right shadow-2xl relative";
+        target.innerHTML = `
+          <div class="flex justify-between items-center mb-4">
+            <div class="text-sky-300 text-xs font-black">إشعار هام • السلام نت</div>
+            <div class="bg-blue-950/80 border border-sky-400/50 text-sky-200 px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
+              AL-Salam Net
+            </div>
+          </div>
+          <div class="wavy-notebook-paper p-6 sm:p-7 text-slate-900 relative">
+            <div class="notebook-holes">
+              <div class="notebook-ring"></div>
+              <div class="notebook-ring"></div>
+              <div class="notebook-ring"></div>
+              <div class="notebook-ring"></div>
+              <div class="notebook-ring"></div>
+            </div>
+            <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-sky-950 text-center border-b-2 border-sky-200 pb-2 mb-3"></h5>
+            <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed whitespace-pre-line"></div>
+            <div class="mt-6 pt-3 border-t border-sky-200 flex justify-between items-center text-[11px] font-black text-sky-900">
+              <span>فريق شبكة السلام نت</span>
+              <span id="card-preview-date">${dateStr}</span>
+            </div>
+          </div>
+          <div class="text-center text-sky-200/90 text-xs font-bold mt-3">
+            شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
+          </div>
+        `;
+      } else if (themeKey === 'white-orange') {
+        target.className = "w-full max-w-lg p-6 sm:p-8 rounded-2xl theme-whiteboard-orange text-right shadow-2xl relative";
+        target.innerHTML = `
+          <div class="flex justify-between items-center mb-4">
+            <div class="magnet-pin"></div>
+            <div class="bg-amber-950/50 border border-orange-200/50 text-white px-3 py-1 rounded-lg font-brand-en font-black text-xs sm:text-sm tracking-wider shadow">
+              AL-Salam Net
+            </div>
+          </div>
+          <div class="board-memo p-6 sm:p-7 text-slate-900 relative">
+            <h5 id="card-preview-title" class="font-black text-base sm:text-lg text-orange-600 text-center border-b-2 border-orange-200 pb-2 mb-3"></h5>
+            <div id="card-preview-body" class="text-xs sm:text-sm font-bold text-slate-800 leading-relaxed whitespace-pre-line"></div>
+            <div class="mt-6 pt-3 border-t border-orange-200 flex justify-between items-center text-[11px] font-black text-orange-800">
+              <span>شبكة السلام نت</span>
+              <span id="card-preview-date">${dateStr}</span>
+            </div>
+          </div>
+          <div class="text-center text-white/90 text-xs font-bold mt-3">
+            شبكة السلام نت • نسعد بخدمتكم وتوفير أفضل تغطية
+          </div>
+        `;
+      }
+
+      syncCardLivePreview();
+    };
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadAppData();
+      const dateBadge = document.getElementById('card-preview-date');
+      if (dateBadge) dateBadge.innerText = new Date().toLocaleDateString('ar-SY');
+    });
+  </script>
+</body>
+</html>
